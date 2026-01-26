@@ -1,0 +1,62 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: sandb6-ThinkStation-P8
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 20
+Rules claiming more threads will be scaled down.
+Job stats:
+job                    count
+-------------------  -------
+all                        1
+calculate_distances        1
+cluster_genomes            1
+finalize_results           1
+sketch_and_filter          1
+visualize_results          1
+total                      6
+
+Select jobs to execute...
+Execute 1 jobs...
+[Wed Jan 14 11:46:32 2026]
+localrule sketch_and_filter:
+    input: /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/0-download/genomes
+    output: /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/1-sketch/genomes_sketch.msh, /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/1-sketch/targets.txt, /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/1-sketch/non_targets.txt
+    jobid: 2
+    reason: Missing output files: /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/1-sketch/genomes_sketch.msh, /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/1-sketch/non_targets.txt; Params have changed since last execution: Union of exclusive params before and now across all output: before: 'mycobacterium_tuberculosis' now: 'staphylococcus_epidermidis' 
+    threads: 8
+    resources: tmpdir=/tmp
+
+[Wed Jan 14 11:47:58 2026]
+Finished jobid: 2 (Rule: sketch_and_filter)
+1 of 6 steps (17%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Wed Jan 14 11:47:58 2026]
+localrule calculate_distances:
+    input: /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/1-sketch/genomes_sketch.msh
+    output: /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/2-distances/distances.txt
+    jobid: 5
+    reason: Missing output files: /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/2-distances/distances.txt; Input files updated by another job: /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/1-sketch/genomes_sketch.msh
+    threads: 8
+    resources: tmpdir=/tmp
+
+Terminating processes on user request, this might take some time.
+RuleException:
+CalledProcessError in file "/home/sandb6/scripts/MashClust/Snakefile", line 78:
+Command 'set -euo pipefail;  
+        python3 scripts/2-mashclust-distances.py             /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/1-sketch             -o /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/2-distances             --threads 8' died with <Signals.SIGINT: 2>.
+[Wed Jan 14 11:52:13 2026]
+Error in rule calculate_distances:
+    message: None
+    jobid: 5
+    input: /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/1-sketch/genomes_sketch.msh
+    output: /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/2-distances/distances.txt
+    shell:
+        
+        python3 scripts/2-mashclust-distances.py             /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/1-sketch             -o /mnt/HDD12TB/pathogen_reruns/staphylococcus_epidermidis/mashclust/2-distances             --threads 8
+        
+        (command exited with non-zero exit code)
+Complete log(s): /home/sandb6/scripts/MashClust/.snakemake/log/2026-01-14T114632.079434.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

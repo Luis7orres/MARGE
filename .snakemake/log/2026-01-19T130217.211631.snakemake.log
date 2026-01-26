@@ -1,0 +1,41 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: sandb6-ThinkStation-P8
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 28
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+visualize_results        1
+total                    2
+
+Select jobs to execute...
+Execute 1 jobs...
+[Mon Jan 19 13:02:17 2026]
+localrule visualize_results:
+    input: /mnt/HDD12TB/pathogen_reruns/stenotrophomonas_maltophila/mashclust/3-cluster/clustering_data.json
+    output: /mnt/HDD12TB/pathogen_reruns/stenotrophomonas_maltophila/mashclust/4-visualize/cluster_distribution.html
+    log: logs/4-visualize.log
+    jobid: 6
+    reason: Forced execution
+    resources: tmpdir=/tmp
+
+[Mon Jan 19 13:02:22 2026]
+Finished jobid: 6 (Rule: visualize_results)
+1 of 2 steps (50%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Mon Jan 19 13:02:22 2026]
+localrule all:
+    input: /mnt/HDD12TB/pathogen_reruns/stenotrophomonas_maltophila/mashclust/results/selected_accessions.txt, /mnt/HDD12TB/pathogen_reruns/stenotrophomonas_maltophila/mashclust/4-visualize/cluster_distribution.html
+    jobid: 0
+    reason: Input files updated by another job: /mnt/HDD12TB/pathogen_reruns/stenotrophomonas_maltophila/mashclust/4-visualize/cluster_distribution.html
+    resources: tmpdir=/tmp
+
+[Mon Jan 19 13:02:22 2026]
+Finished jobid: 0 (Rule: all)
+2 of 2 steps (100%) done
+Complete log(s): /home/sandb6/scripts/MashClust/.snakemake/log/2026-01-19T130217.211631.snakemake.log
