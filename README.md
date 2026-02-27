@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/imgs/marge.png" alt="MARGE" width="200"/>
+</p>
+
 # MARGE
 ## Mash Assisted Representative Genome Extracrion
 
