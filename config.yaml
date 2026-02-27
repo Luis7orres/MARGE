@@ -39,7 +39,7 @@ params:
     delay: 30                # Seconds between batches
     max_retries: 5           # Retries per batch
     use_api_key: true        # Use NCBI API key for higher rate limits
-    api_key: "b2f3f763bad4e52d0017cfb04f1363145d08"  # Get from https://www.ncbi.nlm.nih.gov/account/settings/
+    api_key: ""  # Get from https://www.ncbi.nlm.nih.gov/account/settings/
 
 # Reference genomes (Optional, but recommended)
 reference:
