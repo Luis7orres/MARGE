@@ -1,5 +1,5 @@
 # ============================================================================
-# MashClust Snakemake Pipeline
+# MARGE Snakemake Pipeline
 # ============================================================================
 # Universal bacterial genome clustering using Mash distance-based approach
 # 
@@ -69,7 +69,7 @@ rule sketch_and_filter:
     log:
         os.path.join(LOGS, "1-sketch.log")
     params:
-        bacteria = config["params"]["bacteria_name"],
+        filter_arg = f"-f {config['params']['bacteria_name']}" if config["params"].get("filter_enabled", True) else "--no-filter",
         kmer = config["params"]["mash"]["kmer_size"],
         sketch_size = config["params"]["mash"]["sketch_size"]
     threads: config["params"]["threads"]
@@ -78,7 +78,7 @@ rule sketch_and_filter:
         python3 {SCRIPTS}/1-mashclust-sketch.py \
             {input.genomes_dir} \
             -o {DIR_SK} \
-            -f "{params.bacteria}" \
+            {params.filter_arg} \
             -k {params.kmer} \
             -s {params.sketch_size} \
             --threads {threads} 2>&1 | tee {log}
@@ -86,18 +86,23 @@ rule sketch_and_filter:
 
 rule calculate_distances:
     input:
+        # El script necesita que el sketch exista antes de empezar
         sketch = rules.sketch_and_filter.output.sketch
     output:
         matrix = os.path.join(DIR_DIST, "distances.txt")
     log:
         os.path.join(LOGS, "2-distances.log")
+    params:
+        chunk_size = config["params"]["mash"].get("chunk_size", 2000),
+        input_dir = DIR_SK
     threads: config["params"]["threads"]
     shell:
         """
         python3 {SCRIPTS}/2-mashclust-distances.py \
-            {DIR_SK} \
+            {params.input_dir} \
             -o {DIR_DIST} \
-            --threads {threads} 2>&1 | tee {log}
+            --threads {threads} \
+            --chunk-size {params.chunk_size} 2>&1 | tee {log}
         """
 
 rule cluster_genomes:
@@ -111,12 +116,12 @@ rule cluster_genomes:
     params:
         threshold = config["params"]["id_threshold"],
         n_reps = config["params"]["n_representatives"],
-        ref_arg = f"--reference {config['reference']['accession']}" if config["reference"]["enabled"] else "--no-reference-protection"
+        ref_arg = lambda wildcards: f"--reference {' '.join(config['reference']['accession'])}" if config["reference"]["enabled"] else "--no-reference-protection"
     shell:
         """
         python3 {SCRIPTS}/3-mashclust-cluster.py \
-            {DIR_DIST} \
-            -o {DIR_CLUST} \
+            {input.matrix} \
+            -o {output.representatives} \
             -t {params.threshold} \
             -n {params.n_reps} \
             {params.ref_arg} 2>&1 | tee {log}
@@ -143,6 +148,11 @@ rule finalize_results:
     output:
         acc_file = os.path.join(DIR_RES, config["results"]["accessions_file"]),
         genomes_dir = directory(os.path.join(DIR_RES, config["results"]["genomes_dir"]))
+    params:
+        dm_script = os.path.abspath(os.path.join(SCRIPTS, "5.1-dataset-manager.py")),
+        api_key_arg = lambda wildcards: f"--api-key {config['params']['download']['api_key']}" \
+                      if config["params"]["download"].get("use_api_key", False) \
+                      and config["params"]["download"].get("api_key") else ""
     log:
         os.path.join(LOGS, "5-finalize.log")
     shell:
@@ -150,8 +160,8 @@ rule finalize_results:
         python3 {SCRIPTS}/5-mashclust-finalize.py \
             --non-targets {input.non_targets} \
             --representatives {input.representatives} \
-            --out-dir {DIR_RES} \
-            --genomes-subdir {config[results][genomes_dir]} \
+            --out-dir {output.genomes_dir} \
             --acc-file {output.acc_file} \
-            --dataset-manager /home/sandb6/scripts/pipeline_1/resources/scripts/dataset-manager.py 2>&1 | tee {log}
+            --dataset-manager {params.dm_script} \
+            {params.api_key_arg} 2>&1 | tee {log}
         """

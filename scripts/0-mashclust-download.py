@@ -13,6 +13,13 @@ import time
 from pathlib import Path
 from zipfile import ZipFile
 
+def sanitize_name(name):
+    clean = name.lower()
+    for char in [' ', '.', '-', '/']:
+        clean = clean.replace(char, '_')
+    clean = re.sub(r'[\[\]\(\)]', '', clean) 
+    return clean
+
 def download_with_adaptive_retry(cmd, batch_num, max_retries=5, api_key=None):
     """
     Download with adaptive retries.
@@ -119,7 +126,7 @@ def main():
     total_genomes = len(accessions)
     total_batches = (total_genomes + args.batch_size - 1) // args.batch_size
     
-    print(f"[INFO] ========== MashClust Download Step ==========", file=sys.stderr)
+    print(f"[INFO] ========== MARGE Genome Download  ==========", file=sys.stderr)
     print(f"[INFO] Total genomes to download: {total_genomes}", file=sys.stderr)
     print(f"[INFO] Already downloaded: {existing_genomes}", file=sys.stderr)
     print(f"[INFO] Batch size: {args.batch_size}", file=sys.stderr)
@@ -231,10 +238,7 @@ def main():
                             acc = match.group(1)
                             if acc in batch:
                                 meta = genome_meta.get(acc, {})
-                                org_name = re.sub(
-                                    r'[^a-zA-Z0-9-_]', '', 
-                                    meta.get('organism', 'unknown').replace(' ', '_').lower()
-                                )
+                                org_name = sanitize_name(meta.get('organism', 'unknown'))
                                 tax_id = meta.get('tax_id', 'unknown')
                                 acc_clean = acc.replace('.', '_')
 

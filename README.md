@@ -1,4 +1,5 @@
-# MashClust Pipeline
+# MARGE
+## Mash Assisted Representative Genome Extracrion
 
 An automated workflow for large-scale genomic proximity analysis.
 
@@ -20,8 +21,6 @@ Interactive HTML outputs powered by **Plotly**:
 * **Dual-Clustered Heatmap:** Features synchronized top and left dendrograms via UPGMA clustering.
 * **Species Boundary Focus:** Custom color scale highlighting the **0.06 (Blue) to 0.07 (Yellow)** range to visually distinguish the 94-95% ANI species boundary.
 * **PCoA / MDS:** Interactive 2D projection of the genomic space for population structure analysis.
-
-
 
 ## 🛠️ Requirements
 

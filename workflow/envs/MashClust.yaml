@@ -1,0 +1,19 @@
+name: mashclust
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
+dependencies:
+  - python=3.14.2
+  - ncbi-datasets-cli
+  - quicktree
+  - scikit-learn
+  - joblib
+  - scipy
+  - numpy
+  - threadpoolctl
+  - mash
+  - plotly 
+
