@@ -1,8 +1,8 @@
-<p align="center">
-  <img src="assets/imgs/marge.png" alt="MARGE" width="200"/>
+<p align="left">
+  <img src="assets/imgs/marge.png" alt="MARGE" width="150"/>
 </p>
 
-# MARGE
+#    MARGE
 ## Mash Assisted Representative Genome Extracrion
 
 An automated workflow for large-scale genomic proximity analysis.

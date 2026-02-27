@@ -28,3 +28,4 @@ localrule download_genomes:
     reason: Missing output files: /mnt/HDD12TB/pathogen_reruns/treponema_pallidum/marge/0-download/genomes; Params have changed since last execution: Union of exclusive params before and now across all output: before: 30,1000 now: 50,20 
     resources: tmpdir=/tmp
 
+Complete log(s): /home/sandb6/scripts/MashClust/.snakemake/log/2026-02-27T102007.086181.snakemake.log
