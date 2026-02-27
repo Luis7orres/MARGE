@@ -1,5 +1,5 @@
 <p align="left">
-  <img src="assets/imgs/marge.png" alt="MARGE" width="150"/>
+  <img src="assets/imgs/marge_lg.png" alt="MARGE" width="150"/>
 </p>
 
 #    MARGE
